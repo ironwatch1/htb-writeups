@@ -144,21 +144,51 @@ cat /home/nathan/user.txt
 
 > 🔒 *Misma política que la Task 4: los valores de las flags no se publican; el writeup documenta el procedimiento completo para reproducirlos.*
 
-* **Task 8: What is the full path to the binary on this machine has special capabilities that can be abused to obtain root privileges?**  
-  **Procedimiento:** Una vez dentro del sistema con el usuario `nathan`, se realiza una enumeración de binarios que cuentan con capacidades especiales de Linux (*Capabilities*) asignadas mediante la herramienta `getcap`: `getcap -r / 2>/dev/null`  
-  * **`getcap`:** Herramienta que lista las capacidades asociadas a los binarios.  
-  * **`-r /`:** Realiza una búsqueda recursiva desde el directorio raíz (`/`).  
-  * **`2>/dev/null`:** Redirige y oculta los errores de "Permiso denegado" para mantener limpia la consola.  
-  **Salida de la terminal:**  
-  `/usr/bin/python3.8 = cap_setuid,cap_net_bind_service+eip`  
-  `/usr/bin/ping = cap_net_raw+ep`  
-  `/usr/bin/traceroute6.iputils = cap_net_raw+ep`  
-  `/usr/bin/mtr-packet = cap_net_raw+ep`  
-  **Análisis técnico:** En los resultados se observa que el intérprete `/usr/bin/python3.8` posee la capacidad `cap_setuid`, la cual permite a un proceso arbitrario cambiar su identificador de usuario de ejecución (UID) a 0 (`root`), haciendo posible la escalada de privilegios.  
-  **Respuesta:** `/usr/bin/python3.8`  
-  **Comando de escalada de privilegios:** `python3.8 -c 'import os; os.setuid(0); os.system("/bin/bash")'`  
-  * **`python3.8`:** Invoca el binario con la *capability* asignada (`/usr/bin/python3.8`).  
-  * **`-c`:** Permite ejecutar código Python en una sola línea desde la terminal.  
-  * **`import os`:** Importa el módulo de sistema operativo de Python.  
-  * **`os.setuid(0)`:** Utiliza la capacidad `cap_setuid` para cambiar el identificador del usuario activo a 0 (`root`).  
-  * **`os.system("/bin/bash")`:** Despliega una consola interactiva `bash` con los privilegios de `root`.
+### Task 8 — What is the full path to the binary on this machine has special capabilities that can be abused to obtain root privileges?
+
+Comando ejecutado:
+
+```bash
+getcap -r / 2>/dev/null
+```
+
+Procedimiento:
+
+- Una vez dentro del sistema con el usuario `nathan`, se realiza una enumeración de binarios que cuentan con capacidades especiales de Linux (*Capabilities*) asignadas mediante la herramienta `getcap`.
+- *`getcap`: Herramienta que lista las capacidades asociadas a los binarios.
+- *`-r /`: Realiza una búsqueda recursiva desde el directorio raíz (`/`).
+- *`2>/dev/null`: Redirige y oculta los errores de "Permiso denegado" para mantener limpia la consola.
+
+Salida de la terminal:
+
+```text
+/usr/bin/python3.8 = cap_setuid,cap_net_bind_service+eip
+/usr/bin/ping = cap_net_raw+ep
+/usr/bin/traceroute6.iputils = cap_net_raw+ep
+/usr/bin/mtr-packet = cap_net_raw+ep
+```
+
+Análisis técnico:
+
+- En los resultados se observa que el intérprete `/usr/bin/python3.8` posee la capacidad `cap_setuid`.
+- Esta capacidad permite a un proceso arbitrario cambiar su identificador de usuario de ejecución (UID) a `0` (`root`), haciendo posible la escalada de privilegios.
+
+Respuesta: `/usr/bin/python3.8`
+
+### Escalada de privilegios
+
+Comando ejecutado:
+
+```bash
+python3.8 -c 'import os; os.setuid(0); os.system("/bin/bash")'
+```
+
+Procedimiento:
+
+- *`python3.8`: Invoca el binario con la *capability* asignada (`/usr/bin/python3.8`).
+- *`-c`: Permite ejecutar código Python en una sola línea desde la terminal.
+- *`import os`: Importa el módulo de sistema operativo de Python.
+- *`os.setuid(0)`: Utiliza la capacidad `cap_setuid` para cambiar el identificador del usuario activo a `0` (`root`).
+- *`os.system("/bin/bash")`: Despliega una consola interactiva `bash` con los privilegios de `root`.
+
+> 💡 *Hallazgo relevante: las Linux Capabilities incorrectamente configuradas (como cap_setuid en un intérprete de comandos) permiten a usuarios no privilegiados obtener acceso root de forma inmediata.*
