@@ -1,4 +1,4 @@
-## 1. Resumen
+## Introducción
 
 **Máquina evaluada:** Cup (Hack The Box) — Dificultad: Easy
 **Sistema operativo:** Ubuntu 20.04.2 LTS
