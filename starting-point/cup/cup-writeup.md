@@ -192,3 +192,24 @@ Procedimiento:
 - *`os.system("/bin/bash")`: Despliega una consola interactiva `bash` con los privilegios de `root`.
 
 > 💡 *Hallazgo relevante: las Linux Capabilities incorrectamente configuradas (como cap_setuid en un intérprete de comandos) permiten a usuarios no privilegiados obtener acceso root de forma inmediata.*
+>
+> ### Submit Root Flag
+
+Comandos ejecutados:
+
+```bash
+whoami
+
+Resultado: root
+
+cat /root/root.txt
+```
+
+Procedimiento:
+
+- Una vez obtenida la shell interactiva con privilegios de superusuario (`root`), se confirma la elevación de privilegios mediante el comando `whoami`.
+- Se navega al directorio personal de `root` (`/root`) y se extrae la bandera final leyendo el contenido del archivo `root.txt`.
+
+Flag root: censurada — capturada durante la operación y validada en la plataforma.
+
+> 🔒 *Misma política que las tareas anteriores: los valores de las flags no se publican; el writeup documenta el procedimiento completo para reproducirlos.*
