@@ -213,3 +213,28 @@ Procedimiento:
 Flag root: censurada — capturada durante la operación y validada en la plataforma.
 
 > 🔒 *Misma política que las tareas anteriores: los valores de las flags no se publican; el writeup documenta el procedimiento completo para reproducirlos.*
+
+### Remediación y Recomendaciones
+
+Corrección de Control de Acceso en la Web (Vulnerabilidad IDOR):
+
+- Implementar verificación de autorización e identidad en el backend antes de entregar archivos o registros en rutas como `/data/`. El sistema debe validar que el usuario autenticado sea el dueño legítimo de esa captura antes de permitir la descarga.
+
+Cifrado de Protocolos e Información Sensible:
+
+- Reemplazar protocolos en texto plano como FTP por alternativas cifradas (SFTP o FTPS).
+- Evitar almacenar o exponer archivos de captura de tráfico (`.pcap`) en directorios web accesibles públicamente.
+
+Gestión de Identidades y Contraseñas:
+
+- Prohibir la reutilización de credenciales entre diferentes servicios (web, FTP, SSH).
+- Priorizar la autenticación SSH mediante par de llaves (clave pública/privada) y desactivar la autenticación por contraseña.
+
+Principio de Menor Privilegio (Hardening del Sistema):
+
+- Auditar periódicamente los binarios del sistema para identificar permisos SUID o capabilities peligrosas.
+- Remover la capacidad `cap_setuid` del intérprete de Python ejecutando:
+
+```bash
+sudo setcap -r /usr/bin/python3.8
+```
