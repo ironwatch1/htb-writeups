@@ -154,10 +154,10 @@ getcap -r / 2>/dev/null
 
 Procedimiento:
 
-- Una vez dentro del sistema con el usuario `nathan`, se realiza una enumeración de binarios que cuentan con capacidades especiales de Linux (*Capabilities*) asignadas mediante la herramienta `getcap`.
-  *`getcap`: Herramienta que lista las capacidades asociadas a los binarios.
-  *`-r /`: Realiza una búsqueda recursiva desde el directorio raíz (`/`).
-  *`2>/dev/null`: Redirige y oculta los errores de "Permiso denegado" para mantener limpia la consola.
+Una vez dentro del sistema con el usuario `nathan`, se realiza una enumeración de binarios que cuentan con capacidades especiales de Linux (*Capabilities*) asignadas mediante la herramienta `getcap`.
+- `getcap`: Herramienta que lista las capacidades asociadas a los binarios.
+- `-r /`: Realiza una búsqueda recursiva desde el directorio raíz (`/`).
+- `2>/dev/null`: Redirige y oculta los errores de "Permiso denegado" para mantener limpia la consola.
 
 Salida de la terminal:
 
