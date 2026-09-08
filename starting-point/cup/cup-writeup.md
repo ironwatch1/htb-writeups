@@ -192,8 +192,8 @@ Procedimiento:
 - *`os.system("/bin/bash")`: Despliega una consola interactiva `bash` con los privilegios de `root`.
 
 > 💡 *Hallazgo relevante: las Linux Capabilities incorrectamente configuradas (como cap_setuid en un intérprete de comandos) permiten a usuarios no privilegiados obtener acceso root de forma inmediata.*
->
-> ### Submit Root Flag
+
+ ### Submit Root Flag
 
 Comandos ejecutados:
 
