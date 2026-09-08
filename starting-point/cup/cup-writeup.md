@@ -10,7 +10,7 @@
 - Gestión insegura de credenciales (transmisión en texto plano y reutilización de contraseñas).
 - Asignación insegura de Linux Capabilities en binarios del sistema.
 
-  ### Task 1 — ¿Cuántos puertos TCP hay abiertos?
+  ### Task 1 — ¿Cuántos puertos hay abiertos?
 
 **Comando ejecutado:**
 
